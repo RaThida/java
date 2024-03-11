@@ -1,24 +1,41 @@
-import java.util.Scanner;
+// we import random to generate rondom number of the game
+import java.util.Random;
 
 public class Exercise6 {
-    public static void main(String[] args){
-    Scanner input = new Scanner (System.in);
-    System.out.print("Enter a sentence : ");
-    String str = input.nextLine();
-    input.close();
-    
-    String result = " ";
-    
-    for(int i = 0; i< str.length(); i++ ){
-      // Extract the current character as a string
-        String ch = " " + str.charAt(i);
-      // Check if the result string already contains the current character
-        if(result.contains(ch)){
-      // If the character is already in the result string,skip to the next iteration continue;
-            continue;
+    public static void main(String[] args) {
+        int totalOfGames = 100;
+        int personAWin = 0;
+        int personBWin = 0;
+
+        // simulate game for person A and increment personAWin if person A win the game
+        for (int i = 0; i < totalOfGames; i++) {
+            personAWin += playGame();
         }
-        result += ch;
+        
+        // simulate game for person B and increment personBWin if person B win the game
+        for (int i = 0; i < totalOfGames; i++) {
+            personBWin += playGame();
+        }
+        //display the reusult
+        System.out.println("The total of the games: " + totalOfGames);
+        System.out.println("Person A wins " + personAWin + " out of " + totalOfGames + " games");
+        System.out.println("Person B wins " + personBWin + " out of " + totalOfGames + " games");
     }
-    System.out.println(result);
-  }
+
+    public static int playGame() {
+        Random random = new Random();
+        // simulate person A and person B picking numbers 1, 2, or 3
+        int personA_choice = random.nextInt(3) + 1;
+        int personB_choice = random.nextInt(3) + 1;
+        // check if they match
+        if (personA_choice == personB_choice) {
+            // person A wins
+            return 1;
+        } else {
+            // person B wins
+            return 0;
+        }
+        
+    }
 }
+

@@ -1,55 +1,69 @@
 import java.util.Scanner;
 
 public class Exercise8 {
-public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
 
-        System.out.print("Enter a password: ");
-        String password = input.nextLine();
-        
-        input.close();
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int numCorrect = 0;
 
-        boolean valid = true;
+        for (int i = 0; i < 5; i++) {
+            int num1 = (int) (Math.random() * 11) + 10;
+            int num2 = (int) (Math.random() * 11) + 10;
+            String operator = randomOperator();
+            double answer = Answer(num1, num2, operator);
 
-        // Check for exactly 8 characters
-        if (password.length() != 8) {
-            valid = false;
-            System.out.println("Password is invalid.You must have exactly 8 characters.");
-        }
+            System.out.printf("Question %d: What is %d %s %d? = ", i + 1, num1, operator, num2);
+            double userAnswer = scanner.nextDouble();
 
-        // Check for only digits and letters
-        for (int i = 0; i < password.length(); i++) {
-            char character = password.charAt(i);
-            if (!Character.isLetterOrDigit(character)) {
-                valid = false;
-                System.out.println("Password is invalid.You must consist of only digits and letters.");
-                break; // Exit the loop 
+            boolean isCorrect;
+            if (userAnswer == answer) {
+                isCorrect = true;
+            } else {
+                isCorrect = false;
+                System.out.println("Incorrect. The correct answer is " + answer);
+            }
+
+            numCorrect += isCorrect ? 1 : 0;
+
+            if (isCorrect) {
+                System.out.println("Correct!");
             }
         }
 
-        // Check for starting with a digit
-        if (!Character.isDigit(password.charAt(0))) {
-            valid = false;
-            System.out.println("Password is invalid.You must start with a digit.");
-        }
+        // Close the scanner to release resources
+        scanner.close();
 
-        // Check for at least one uppercase letter
-        boolean hasUppercase = false;
-        for (int i = 0; i < password.length(); i++) {
-            char character = password.charAt(i);
-            if (Character.isUpperCase(character)) {
-                hasUppercase = true;
+        System.out.println("You got " + numCorrect + " correct answers out of 5.");
+    }
+
+    public static String randomOperator() {
+        int randomIndex = (int) (Math.random() * 4);
+        String[] operators = {"+", "-", "*", "/"};
+        return operators[randomIndex];
+    }
+
+    public static double Answer(int num1, int num2, String operator) {
+        double result = 0;
+
+        switch (operator) {
+            case "+":
+                result = num1 + num2;
                 break;
-            }
+            case "-":
+                result = num1 - num2;
+                break;
+            case "*":
+                result = num1 * num2;
+                break;
+            case "/":
+                if (num2 != 0) {
+                    result = (double) num1 / num2;
+                } else {
+                    System.out.println("Cannot divide by zero. Setting result to 0.");
+                }
+                break;
         }
 
-        if (!hasUppercase) {
-            valid = false;
-            System.out.println("Password is invalid.You must contain at least one uppercase letter.");
-        }
-
-        if (valid) {
-            System.out.println("The password is valid.");
-        }
+        return result;
     }
 }
